@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow secure HTTPS connections to Rick and Morty API -->
+    <domain-config>
+        <domain includeSubdomains="true">rickandmortyapi.com</domain>
+        <trust-anchors>
+            <!-- Trust system default CAs -->
+            <certificates src="system"/>
+        </trust-anchors>
+    </domain-config>
+    
+    <!-- Default configuration for all other domains -->
+    <base-config>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+</network-security-config>
