@@ -1,5 +1,15 @@
-# Claude Code files
+# AI related files
 .claude/
+CLAUDE.md
+.cursor/
+.cursorrules
+.vscode/
+**/claude-*
+**/*claude*
+**/*ai-*
+.anthropic/
+.copilot/
+.github/copilot-instructions.md
 
 # Compiled class file
 *.class
@@ -79,10 +89,33 @@ captures/
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 
-# Keystore files
-# Uncomment the following lines if you do not want to check your keystore files in.
+# Keystore files - NEVER upload to repository for security
 *.jks
 *.keystore
+*.p12
+*.pfx
+key.properties
+keystore.properties
+signing.properties
+release.properties
+
+# Sensitive configuration files
+google-services.json
+GoogleService-Info.plist
+secret.properties
+secrets.properties
+local.properties
+*.env
+.env*
+
+# API Keys and tokens
+api_keys.xml
+secrets.xml
+config/secret/*
+**/secrets/**
+**/*secret*
+**/*key*
+**/*token*
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild
