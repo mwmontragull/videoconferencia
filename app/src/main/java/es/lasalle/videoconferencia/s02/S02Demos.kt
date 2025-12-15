@@ -42,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
@@ -61,18 +62,18 @@ import es.lasalle.videoconferencia.ui.theme.VideoconferenciaTheme
 
 /**
  * 🎯Layout Playground
- * 
+ *
  * 📖 QUÉ HACE:
  * Demuestra los conceptos fundamentales de layout en Compose:
  * - Row: disposición horizontal con weight
  * - Box: superposición con alignment
  * - Column: disposición vertical con spacing
- * 
+ *
  * 🧠 CONCEPTOS CLAVE:
  * - Weight (peso): distribuye espacio proporcional (1f = 1 parte, 2f = 2 partes)
  * - Alignment: posiciona elementos dentro de contenedores
  * - Modifier order: el orden importa (clip → background → padding → clickable)
- * 
+ *
  * 💡 PATRÓN DE DISEÑO:
  * - Container (Column) con elementos hijo que demuestran diferentes layouts
  * - Uso de Dimensions para espaciado consistente
@@ -141,16 +142,16 @@ fun LayoutPlayground() {
 
 /**
  * 🎯 DemoChip
- * 
+ *
  * 📖 QUÉ HACE:
  * Chip personalizado que demuestra el orden crítico de modifiers
- * 
+ *
  * 🧠 CONCEPTO CLAVE - ORDEN DE MODIFIERS:
  * 1. clip() - PRIMERO: define la forma
  * 2. background() - SEGUNDO: aplica color dentro de la forma
  * 3. padding() - TERCERO: añade espacio interno
  * 4. clickable() - ÚLTIMO: área de click incluye padding
- * 
+ *
  * ⚠️ IMPORTANTE:
  * Si cambias el orden, el resultado visual cambia!
  * Ejemplo: background → clip = esquinas cuadradas
@@ -182,15 +183,15 @@ fun DemoChip(
 
 /**
  * 🎯 Counter Demo
- * 
+ *
  * 📖 QUÉ HACE:
  * Demuestra manejo básico de estado con contador simple
- * 
+ *
  * 🧠 CONCEPTO CLAVE - STATE MANAGEMENT:
  * - Recibe state como parámetro (state hoisting)
  * - Emite eventos hacia arriba (onValueChange)
  * - No maneja state internamente (stateless)
- * 
+ *
  * 🔄 PATRÓN "DATA DOWN, EVENTS UP":
  * - quantity1: datos fluyen hacia abajo
  * - onValueChange: eventos fluyen hacia arriba
@@ -216,11 +217,19 @@ fun CounterDemo(
         Row(
             horizontalArrangement = Arrangement.spacedBy(Dimensions.spaceSmall)
         ) {
-            Button(onClick = { onValueChange(quantity1 - 1) }) {
-                Text("-")
+            Button(
+                modifier = Modifier.testTag("decrease_button"),
+                onClick = { onValueChange(quantity1 - 1) }) {
+                Text(
+                    text = "-",
+                )
             }
-            Button(onClick = { onValueChange(quantity1 + 1) }) {
-                Text("+")
+            Button(
+                modifier = Modifier.testTag("increase_button"),
+                onClick = { onValueChange(quantity1 + 1) }) {
+                Text(
+                    text = "+",
+                )
             }
         }
     }
@@ -228,21 +237,21 @@ fun CounterDemo(
 
 /**
  * 🎯 Stepper (Stateless)
- * 
+ *
  * 📖 QUÉ HACE:
  * Componente stepper completamente stateless para incrementar/decrementar valores
- * 
+ *
  * 🧠 CONCEPTO CLAVE - STATELESS COMPONENT:
  * - No tiene estado interno (no usa remember)
  * - Recibe valor y callback como parámetros
  * - Completamente controlado por el padre
  * - Fácil de testear y reutilizar
- * 
+ *
  * ♿ ACCESIBILIDAD:
  * - Touch targets mínimos de 48dp
  * - Content descriptions descriptivos
  * - iconos semánticamente apropiados
- * 
+ *
  * 💡 PATRÓN:
  * - Row horizontal con elementos centrados
  * - IconButtons con sizing accesible
@@ -289,15 +298,15 @@ fun Stepper(
 
 /**
  * 🎯 Stepper Demo
- * 
+ *
  * 📖 QUÉ HACE:
  * Demuestra cómo usar el componente Stepper stateless
- * 
+ *
  * 🧠 CONCEPTO CLAVE - STATE HOISTING EN ACCIÓN:
  * - Actúa como "puente" entre estado del padre y Stepper
  * - Pasa estado hacia abajo al Stepper
  * - Reenvía eventos hacia arriba al padre
- * 
+ *
  * 🔄 FLUJO DE DATOS:
  * 1. Padre (App) tiene rememberSaveable
  * 2. StepperDemo recibe state y callback
@@ -323,15 +332,15 @@ fun StepperDemo(quantity1: Int, onValueChange: (Int) -> Unit) {
 
 /**
  * 📊 DATA CLASS: Task
- * 
+ *
  * 📖 QUÉ REPRESENTA:
  * Modelo de datos simple para las tareas de la demo
- * 
+ *
  * 🧠 CONCEPTOS CLAVE:
  * - Data class: autogenera equals(), hashCode(), toString()
  * - Immutable: val properties (no se pueden cambiar)
  * - Simple structure: solo los datos esenciales
- * 
+ *
  * 📝 FIELDS:
  * - id: identificador único para LazyColumn keys
  * - title: texto a mostrar en la UI
@@ -340,21 +349,21 @@ data class Task(val id: Int, val title: String)
 
 /**
  * 🎯 Task Card
- * 
+ *
  * 📖 QUÉ HACE:
  * Card component que muestra una tarea con acciones (compartir/eliminar)
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - MATERIAL 3:
  * - Card: contenedor con elevación y shape
  * - Row: layout horizontal con SpaceBetween
  * - IconButton: botones accesibles con touch targets
  * - Weight: el texto ocupa espacio disponible
- * 
+ *
  * ♿ ACCESIBILIDAD:
  * - ContentDescription en todos los iconos
  * - Touch targets mínimos de 48dp
  * - Textos descriptivos (no genéricos como "button")
- * 
+ *
  * 💡 PATRÓN DE EVENTOS:
  * - onRemove: callback para eliminar
  * - onShare: callback para compartir
@@ -409,26 +418,26 @@ fun TaskCard(
 
 /**
  * 🎯 Tasks Screen
- * 
+ *
  * 📖 QUÉ HACE:
  * Pantalla completa que demuestra Scaffold + LazyColumn + State management
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - SCAFFOLD:
  * - TopAppBar: barra superior con título
  * - FloatingActionButton: acción principal (agregar)
  * - SnackbarHost: mensajes temporales
  * - Content area: área principal con padding automático
- * 
+ *
  * 📝 ESTADO COMPLEJO:
  * - Lista de tareas (rememberSaveable)
  * - Contador de ID (mutableIntStateOf)
  * - Título compartido (mutable state)
  * - SnackbarHostState (para mostrar mensajes)
- * 
+ *
  * 🔄 SIDE EFFECTS:
  * - LaunchedEffect: maneja snackbar cuando cambia sharedTaskTitle
  * - Cleanup automático: sharedTaskTitle = null
- * 
+ *
  * 📊 LAZYCOLUMN PERFORMANCE:
  * - key = { it.id }: ayuda a Compose trackear items
  * - Solo renderiza items visibles
@@ -441,7 +450,7 @@ fun TasksScreen() {
     var nextId by rememberSaveable { mutableIntStateOf(1) }
     var sharedTaskTitle by remember { mutableStateOf<String?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
-    
+
     // Handle snackbar for shared tasks
     LaunchedEffect(sharedTaskTitle) {
         sharedTaskTitle?.let { title ->
@@ -503,28 +512,28 @@ fun TasksScreen() {
 
 /**
  * 🎯 Theming Showcase
- * 
+ *
  * 📖 QUÉ HACE:
  * Muestra todo el sistema de theming personalizado de La Salle
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - MATERIAL 3 THEMING:
  * - Typography Scale: jerarquía completa de estilos de texto
  * - Color Palette: primary, secondary, tertiary + variants
  * - Shape System: diferentes corner radius para componentes
  * - Component Theming: cómo los componentes heredan el theme
- * 
+ *
  * 🎨 SISTEMA DE COLORES:
  * - Semantic roles: primary (acción), secondary (apoyo), tertiary (acento)
  * - Automatic contrast: onPrimary, onSecondary garantizan legibilidad
  * - Dark mode support: colores adaptativos automáticamente
- * 
+ *
  * 🔤 TYPOGRAPHY SCALE:
  * - Display: headlines grandes
  * - Headline: títulos importantes
  * - Title: subtitles y headers de sección
  * - Body: contenido regular
  * - Label: botones, inputs, captions
- * 
+ *
  * 💡 SHAPES:
  * - Consistencia visual: mismo corner radius para componentes similares
  * - CustomShapes object: shapes específicos para casos especiales
@@ -660,15 +669,15 @@ fun ThemingShowcase() {
 
 /**
  * 🎨 COLOR SWATCH - Muestra visual de un color del theme
- * 
+ *
  * 📖 QUÉ HACE:
  * Componente de demostración que visualiza un color con su nombre
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - COLOR PREVIEW:
  * - Box coloreado: Muestra el color de forma visual
  * - Text descriptivo: Etiqueta clara del rol del color
  * - Layout compacto: Column con width fijo para grid layouts
- * 
+ *
  * 🎯 PARÁMETROS:
  * - name: Etiqueta descriptiva del color (ej: "Primary")
  * - color: Color a mostrar en el swatch
@@ -699,15 +708,15 @@ fun ColorSwatch(
 
 /**
  * ⭕ SHAPE DEMO - Muestra visual de una forma del theme
- * 
+ *
  * 📖 QUÉ HACE:
  * Componente de demostración que visualiza un RoundedCornerShape
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - SHAPE PREVIEW:
  * - Box con shape aplicado: Demuestra el corner radius visualmente
  * - Background con primaryContainer: Resalta la forma sin distraer
  * - Text descriptivo: Identifica el tipo de shape
- * 
+ *
  * 🎯 PARÁMETROS:
  * - name: Etiqueta del shape (ej: "Button", "Card", "Chip")
  * - shape: RoundedCornerShape a demostrar visualmente
@@ -737,17 +746,17 @@ fun ShapeDemo(
 
 /**
  * ♿ ACCESSIBILITY SHOWCASE - Demostración completa de accesibilidad
- * 
+ *
  * 📖 QUÉ HACE:
  * Pantalla educativa que demuestra las mejores prácticas de accesibilidad en Compose
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - A11Y (ACCESSIBILITY):
  * - Semantic roles: heading(), button(), etc.
  * - Content descriptions: Texto para screen readers
  * - Touch targets: Mínimo 48dp para usabilidad
  * - Live regions: Anuncios automáticos de cambios
  * - Toggleable states: Estados claros para switches/checkboxes
- * 
+ *
  * 🎯 SECCIONES EDUCATIVAS:
  * 1. SemanticExamples(): Estructura semántica correcta
  * 2. ContentDescriptionExamples(): Descripciones para screen readers
@@ -786,21 +795,21 @@ fun AccessibilityShowcase() {
 
 /**
  * 🏷️ SEMANTIC EXAMPLES - Roles semánticos y estructura jerárquica
- * 
+ *
  * 📖 QUÉ DEMUESTRA:
  * Cómo crear estructura semántica correcta para screen readers
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - SEMANTIC ROLES:
  * - heading(): Marca elementos como títulos/headers
  * - Jerarquía visual: titleLarge → titleMedium → titleSmall
  * - Jerarquía semántica: Orden lógico para navegación
  * - bodyText: Contenido regular sin rol especial
- * 
+ *
  * ♿ BENEFICIOS PARA USUARIOS:
  * - Screen readers pueden navegar por títulos
  * - Usuarios con discapacidades cognitivas obtienen estructura clara
  * - Navegación rápida saltando entre secciones
- * 
+ *
  * 💡 TÉCNICA CLAVE:
  * .semantics { heading() } transforma Text normal
  * en landmark navigation para accesibilidad
@@ -850,21 +859,21 @@ fun SemanticExamples() {
 
 /**
  * 📝 CONTENT DESCRIPTION EXAMPLES - Descripciones para elementos no textuales
- * 
+ *
  * 📖 QUÉ DEMUESTRA:
  * Cómo proporcionar descripciones efectivas para iconos y elementos interactivos
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - CONTENT DESCRIPTIONS:
  * - contentDescription: Texto leído por screen readers
  * - Descriptivo vs genérico: "Add to favorites" vs "Button"
  * - null quando hay redundancia: Evita duplicación
  * - hideFromAccessibility(): Para elementos puramente decorativos
- * 
+ *
  * ✅ EJEMPLOS BUENOS VS MALOS:
  * - ✅ Bueno: "Add new item to favorites" (acción específica)
  * - ❌ Malo: "Star" (demasiado genérico)
  * - ✅ Decorativo: contentDescription = null + hideFromAccessibility()
- * 
+ *
  * 💡 REGLAS DE ORO:
  * 1. Describe la ACCIÓN, no el icono
  * 2. Sé específico pero conciso
@@ -949,26 +958,26 @@ fun ContentDescriptionExamples() {
 
 /**
  * 👆 TOUCH TARGET EXAMPLES - Tamaños de touch targets accesibles
- * 
+ *
  * 📖 QUÉ DEMUESTRA:
  * La importancia crítica del tamaño mínimo de 48dp para touch targets
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - TOUCH ACCESSIBILITY:
  * - 48dp mínimo: Basado en investigación ergonómica
  * - sizeIn(minWidth, minHeight): Fuerza tamaño mínimo
  * - Background visual: Muestra el área de touch real
  * - Comparación directa: Bueno (48dp) vs Malo (32dp)
- * 
+ *
  * 🔬 CIENCIA DETRÁS DE 48DP:
  * - Promedio del dedo humano: ~44dp
  * - 48dp incluye margen de error
  * - Funciona para todas las edades
  * - Incluye usuarios con dificultades motoras
- * 
+ *
  * ⚖️ COMPLIANCE LEGAL:
  * WCAG 2.1 AA requiere touch targets mínimos
  * para cumplir estándares de accesibilidad
- * 
+ *
  * 💡 TÉCNICA VISUAL:
  * Background semi-transparente revela el área
  * de touch real vs el contenido visual
@@ -1056,27 +1065,27 @@ fun TouchTargetExamples() {
 
 /**
  * 📋 ACCESSIBLE FORM EXAMPLES - Formularios completamente accesibles
- * 
+ *
  * 📖 QUÉ DEMUESTRA:
  * Implementación correcta de campos de formulario accesibles
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - FORM ACCESSIBILITY:
  * - label: Etiqueta clara y descriptiva
  * - supportingText: Ayuda adicional para el usuario
  * - contentDescription: Información para screen readers
  * - mergeDescendants: Agrupa elementos relacionados
  * - Live announcements: Feedback inmediato de cambios
- * 
+ *
  * 🔧 COMPONENTES DEMOSTRADOS:
  * 1. OutlinedTextField: Input con label y supporting text
  * 2. Checkbox: Con label clickeable y estado anunciado
  * 3. Slider: Con valor actual anunciado dinámicamente
- * 
+ *
  * ♿ TÉCNICAS AVANZADAS:
  * - mergeDescendants: Checkbox + Text como unidad semántica
  * - Dynamic contentDescription: Anuncia valores actuales
  * - Clickable labels: Toda el área es interactiva
- * 
+ *
  * 💡 PATRÓN CLAVE:
  * Cada input tiene label, descripción, y estado
  * claramente comunicado a screen readers
@@ -1151,26 +1160,26 @@ fun AccessibleFormExamples() {
 
 /**
  * 📢 STATE ANNOUNCEMENT EXAMPLES - Anuncios automáticos de cambios de estado
- * 
+ *
  * 📖 QUÉ DEMUESTRA:
  * Técnicas avanzadas para comunicar cambios dinámicos a usuarios con screen readers
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - LIVE REGIONS & STATE:
  * - LiveRegionMode.Polite: Anuncia cambios cuando sea apropiado
  * - stateDescription: Describe estado actual de componentes
  * - toggleableState: Estados específicos para switches/checkboxes
  * - mergeDescendants: Agrupa elementos para anuncio conjunto
- * 
+ *
  * 🔊 TIPOS DE ANUNCIOS:
  * 1. Live Region: Cambios de status automáticamente anunciados
  * 2. State Description: Estado actual de botones/controles
  * 3. Toggleable State: On/Off/Indeterminate para switches
- * 
+ *
  * ⚡ TÉCNICAS DEMOSTRADAS:
  * - Status que cambia → Anuncio automático
  * - Counter con state description dinámico
  * - Switch con toggleable state apropiado
- * 
+ *
  * 💡 IMPORTANCIA:
  * Usuarios ciegos dependen de estos anuncios para
  * entender cambios que otros ven visualmente
@@ -1258,16 +1267,16 @@ fun StateAnnouncementExamples() {
 
 /**
  * 🚀 APP - Composable principal con navegación por tabs
- * 
+ *
  * 📖 QUÉ HACE:
  * Orquesta toda la aplicación demo con navegación por bottom tabs
- * 
+ *
  * 🧠 CONCEPTOS CLAVE - APP ARCHITECTURE:
  * - Scaffold: Estructura principal con bottom navigation
  * - State hoisting: selectedTab manejado aquí y pasado down
  * - rememberSaveable: Preserva tab selection durante rotaciones
  * - NavigationBar: Bottom navigation con 5 tabs principales
- * 
+ *
  * 📱 ESTRUCTURA DE NAVEGACIÓN:
  * 1. Layout (🏠): LayoutPlayground - Fundamentos de layout
  * 2. State (⚙️): Manejo de estado con Counter y Stepper
@@ -1275,7 +1284,7 @@ fun StateAnnouncementExamples() {
  * 4. Theme (🎨): ThemingShowcase - Sistema completo de theming
  * 5. A11y (♿): AccessibilityShowcase - Mejores prácticas accesibilidad
  *
- * 
+ *
  * 💡 ARCHITECTURAL DECISIONS:
  * - Single Activity + Compose navigation (modern approach)
  * - Bottom navigation (familiar UX pattern)
@@ -1462,7 +1471,11 @@ fun ThemingShowcasePreview() {
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Theming Showcase - Dark")
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Theming Showcase - Dark"
+)
 @Composable
 fun ThemingShowcaseDarkPreview() {
     VideoconferenciaTheme {
@@ -1478,7 +1491,11 @@ fun AppWithThemePreview() {
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "App with 5 Tabs - Dark")
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "App with 5 Tabs - Dark"
+)
 @Composable
 fun AppWithThemeDarkPreview() {
     VideoconferenciaTheme {
@@ -1494,7 +1511,11 @@ fun AccessibilityShowcasePreview() {
     }
 }
 
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Accessibility Showcase - Dark")
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "Accessibility Showcase - Dark"
+)
 @Composable
 fun AccessibilityShowcaseDarkPreview() {
     VideoconferenciaTheme {
@@ -1516,7 +1537,7 @@ fun AccessibilityLargeFontPreview() {
 
 /**
  * 🎯 S02Demos - Composable principal que envuelve todas las demos de S02
- * 
+ *
  * Esta función proporciona una interfaz principal para acceder a todas las
  * demostraciones de Jetpack Compose y Material Design 3 de la sección S02.
  */
@@ -1526,20 +1547,25 @@ fun S02Demos(
     onNavigateBack: () -> Unit = {}
 ) {
     var selectedDemo by rememberSaveable { mutableIntStateOf(0) }
-    
+
     val demos = listOf(
         "Layout Playground" to @Composable { LayoutPlayground() },
         "Tasks Screen" to @Composable { TasksScreen() },
         "Counter Demo" to @Composable { CounterDemo(quantity1 = 1, onValueChange = {}) },
         "Stepper Demo" to @Composable { StepperDemo(quantity1 = 1, onValueChange = {}) },
-        "Shape Demo" to @Composable { ShapeDemo(name = "Naombre", shape = RoundedCornerShape(2.dp)) },
+        "Shape Demo" to @Composable {
+            ShapeDemo(
+                name = "Naombre",
+                shape = RoundedCornerShape(2.dp)
+            )
+        },
         "Accessibility Showcase" to @Composable { AccessibilityShowcase() }
     )
-    
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { 
+                title = {
                     Text(
                         text = "S02 - Compose + Material Design",
                         style = MaterialTheme.typography.titleLarge

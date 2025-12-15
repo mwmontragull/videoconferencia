@@ -27,6 +27,7 @@ import es.lasalle.videoconferencia.s02.S02Demos
 import es.lasalle.videoconferencia.s03.S03Demo
 import es.lasalle.videoconferencia.s04.ui.S04Demo
 import es.lasalle.videoconferencia.s05.S05Demo
+import es.lasalle.videoconferencia.s06.S06Demo
 import es.lasalle.videoconferencia.ui.theme.Dimensions
 import es.lasalle.videoconferencia.ui.theme.VideoconferenciaTheme
 
@@ -152,6 +153,17 @@ fun MainNavigationApp() {
                 }
             )
         }
+
+        /**
+         * 🧪 S06 - UI Testing con Compose
+         */
+        composable("s06_testing") {
+            S06Demo(
+                onNavigateBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }
 
@@ -241,6 +253,14 @@ fun MainMenuScreen(navController: NavHostController) {
                 icon = Icons.Default.SendAndArchive,
                 color = MaterialTheme.colorScheme.primary,
                 onClick = { navController.navigate("s05_intents") }
+            )
+
+            DemoSection(
+                title = "S06 - UI Testing con Compose",
+                description = "Testing automatizado de interfaces de usuario con Compose Testing, ComposeTestRule y semantics",
+                icon = Icons.Default.BugReport,
+                color = MaterialTheme.colorScheme.secondary,
+                onClick = { navController.navigate("s06_testing") }
             )
 
             Spacer(modifier = Modifier.height(Dimensions.spaceLarge))
